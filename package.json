@@ -1,0 +1,20 @@
+{
+  "name": "js-feature-test",
+  "version": "0.0.1",
+  "description": "测试浏览器js特性",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack --config ./webpack.config.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-loader": "^6.2.0",
+    "typescript": "^3.6.3",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
+  },
+  "dependencies": {
+    "@types/node": "^12.7.10"
+  }
+}
