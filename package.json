@@ -2,9 +2,9 @@
   "name": "js-feature-test",
   "version": "0.0.1",
   "description": "测试浏览器js特性",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "webpack --config ./webpack.config.ts"
+    "build": "webpack --config ./webpack.config.ts"
   },
   "author": "",
   "license": "ISC",
