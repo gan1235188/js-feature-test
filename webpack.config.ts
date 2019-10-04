@@ -10,7 +10,6 @@ module.exports = {
     mainFields: ['jsnext:main', 'browser', 'main'],
     extensions: ['.ts', '.js']
   },
-  target: 'node',
   module: {
     rules: [
       {
