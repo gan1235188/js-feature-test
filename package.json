@@ -4,7 +4,7 @@
   "description": "测试浏览器js特性",
   "main": "dist/index.js",
   "scripts": {
-    "build": "webpack --config ./webpack.config.ts"
+    "build": "webpack --config ./webpack.config.ts && node main.js"
   },
   "author": "",
   "license": "ISC",
