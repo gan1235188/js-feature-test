@@ -4,7 +4,6 @@
       "experimentalDecorators": true,
       "sourceMap": false,
       "noImplicitAny": true,
-      "target": "ES5",
-      "types": ["node"]
+      "target": "ES5"
   }
 }
