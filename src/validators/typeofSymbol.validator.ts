@@ -6,7 +6,7 @@ const validator: Validator = {
   test(content: any) {
       return runTest({
           type: TestType.checkResult,
-          expression: `typeof Symbol === 'symbol'`,
+          expression: `return typeof Symbol === 'symbol'`,
           result: true
       })
   }

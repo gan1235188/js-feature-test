@@ -4,6 +4,7 @@ import { Validator, TestType } from './types'
 const expression = `
     var obj = {}
     obj.default = 1
+    return obj
 `
 
 const validator: Validator = {

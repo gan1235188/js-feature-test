@@ -2,7 +2,7 @@ import { runTest } from '../tools'
 import { Validator, TestType } from './types'
 
 const testExpression = `
-  return [0b11, 0o7, 'Hello\u{000A}\u{0009}!']
+  return [0b11, 0o7, 'Hello\\u{000A}\\u{0009}!']
 `
 
 const validator: Validator = {

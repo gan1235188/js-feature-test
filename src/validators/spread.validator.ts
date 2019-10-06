@@ -4,7 +4,6 @@ import { Validator, TestType } from './types'
 const testExpression = `
   var a = ['a', 'b', 'c'];
   var b = [...a, 'foo'];
-  var c = foo(...a);
 `
 
 const validator: Validator = {

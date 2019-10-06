@@ -1,10 +1,10 @@
-import { TestType, TestOption, checkResult } from './validators/types'
+import { TestType, TestOption, checkResult, dynamicProperties } from './validators/types'
 
 const defaultTestOption = {
   expression: '',
   type: TestType.expectNoWrong,
   result: undefined as any,
-  resultCheckFn: (expect: any, result: any) => expect === result
+  resultCheckFn: isEqual
 }
 
 export function runTest(testOpt: TestOption = defaultTestOption): checkResult {
@@ -23,6 +23,10 @@ export function runTest(testOpt: TestOption = defaultTestOption): checkResult {
     default:
       return expectNoWrong(opt)
   }
+}
+
+export function output(str: string) {
+  document.write(`<p>${str}</p>`)
 }
 
 function getTestOpt(opt: TestOption) {
@@ -54,7 +58,9 @@ function expectNoWrong(opt: TestOption): checkResult {
 function checkResult(opt: TestOption): checkResult {
   try {
     const fn = createFunction(opt.expression)
-    return opt.resultCheckFn(fn(), opt.result)
+    const result = fn()
+    output(`expect result: ${JSON.stringify(opt.result)}, result: ${JSON.stringify(result)}`)
+    return opt.resultCheckFn(result, opt.result)
   } catch (e) { }
 
   return false
@@ -64,6 +70,33 @@ function createFunction(body: string) {
   return new Function(body)
 }
 
-export function output(str: string) {
-  document.write(`<p>${str}</p>`)
+function isEqual(expect: any, result: any): boolean {
+  if (expect === result) return true
+  if (expect !== expect && result !== result) return true
+
+  if (Array.isArray(expect) && Array.isArray(result)) {
+    return isEqualArray(expect, result)
+  }
+
+  if(typeof expect === 'object' && typeof result === 'object') {
+    return isEqualObject(expect, result)
+  }
+
+  return false
+}
+
+function isEqualArray(expect: any[], result: any[]): boolean {
+  if (expect.length !== result.length) return false
+  return expect.every((item, index) => isEqual(item, result[index])) && 
+    result.every((item, index) => isEqual(item, expect[index]))
+}
+
+function isEqualObject(expect: dynamicProperties, result: dynamicProperties) {
+  const expectKeys = Object.keys(expect)
+  const resultKeys = Object.keys(result)
+
+  if(expectKeys.length !== resultKeys.length) return false
+
+  return expectKeys.every((key) => isEqual(expect[key], result[key])) && 
+  resultKeys.every((key) => isEqual(result[key], expect[key])) 
 }

@@ -2,7 +2,7 @@ import { runTest } from '../tools'
 import { Validator, TestType } from './types'
 
 const testExpression = `
-  return /^.$/u.test('吉');
+  return /^.$/u.test('😄');
 `
 
 const validator: Validator = {

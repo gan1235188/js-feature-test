@@ -62,11 +62,11 @@ async function runValidators(content: any, validators: Validator[]) {
 }
 
 async function validatorInvoke({ name, test }: Validator, featureTestResult: dynamicProperty, content: any) {
-  const testResult = await test(content)
 
-  output(`${name}: ${testResult}`)
   output('=================================')
-
+  const testResult = await test(content)
+  output(`${name}: ${testResult}`)
+  
   featureTestResult[name] = testResult
   return testResult
 }
