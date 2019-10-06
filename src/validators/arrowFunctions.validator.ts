@@ -1,12 +1,16 @@
 import { runTest } from '../tools'
 import { Validator, TestType } from './types'
 
+const testExpression = '()=>1'
+
+const name = 'arrowFunctions'
 const validator: Validator = {
-  name: 'arrowFunctions',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.expectNoWrong,
-      expression: '()=>1'
+      expression: testExpression
     })
   }
 }

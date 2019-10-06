@@ -16,10 +16,12 @@ const testExpression = `
   }
 `
 
+const name = 'privateMethods'
 const validator: Validator = {
-  name: 'privateMethods',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.expectNoWrong,
       expression: testExpression
     })

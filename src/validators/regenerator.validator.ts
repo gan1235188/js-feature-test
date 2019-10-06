@@ -12,10 +12,12 @@ const testExpression = `
   b();
 `
 
+const name = 'regenerator'
 const validator: Validator = {
-  name: 'regenerator',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       expression: testExpression,
       type: TestType.expectNoWrong
     })

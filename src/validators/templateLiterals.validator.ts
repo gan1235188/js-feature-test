@@ -3,13 +3,15 @@ import { Validator, TestType } from './types'
 
 const testExpression = 'return `${1}`'
 
+const name = 'templateLiterals'
 const validator: Validator = {
-  name: 'templateLiterals',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: '1'
+      expectResult: '1'
     })
   }
 }

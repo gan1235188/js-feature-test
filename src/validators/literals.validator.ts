@@ -5,13 +5,15 @@ const testExpression = `
   return [0b11, 0o7, 'Hello\\u{000A}\\u{0009}!']
 `
 
+const name = 'literals'
 const validator: Validator = {
-  name: 'literals',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: [3, 7, 'Hello\n\t!']
+      expectResult: [3, 7, 'Hello\n\t!']
     })
   }
 }

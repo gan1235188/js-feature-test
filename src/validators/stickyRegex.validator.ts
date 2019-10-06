@@ -5,10 +5,12 @@ const testExpression = `
   var a = /o+/y;
 `
 
+const name = 'stickyRegex'
 const validator: Validator = {
-  name: 'stickyRegex',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.expectNoWrong,
       expression: testExpression
     })

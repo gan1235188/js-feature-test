@@ -9,10 +9,12 @@ var obj2 = {
 }
 `
 
+const name = 'ObjectSuper'
 const validator: Validator = {
-  name: 'ObjectSuper',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.expectNoWrong,
       expression: testExpression
     })

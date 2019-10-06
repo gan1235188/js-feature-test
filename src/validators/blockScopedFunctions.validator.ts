@@ -9,10 +9,12 @@ const testExpression = `
   a()
 `
 
+const name = 'blockScopedFunctions'
 const validator: Validator = {
-  name: 'blockScopedFunctions',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.expectThrowError,
       expression: testExpression
     })

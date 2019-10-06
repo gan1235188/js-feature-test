@@ -7,13 +7,15 @@ const testExpression = `
   return add1(1)
 `
 
+const name = 'partialApplication'
 const validator: Validator = {
-  name: 'partialApplication',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: 2
+      expectResult: 2
     })
   }
 }

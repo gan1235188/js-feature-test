@@ -5,10 +5,12 @@ const testExpression = `
   Symbol.hasInstance
 `
 
+const name = 'instanceof'
 const validator: Validator = {
-  name: 'instanceof',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.expectNoWrong,
       expression: testExpression
     })

@@ -8,13 +8,15 @@ const testExpression = `
   return Foo() === undefined && new Foo() === Foo
 `
 
+const name = 'newTarget'
 const validator: Validator = {
-  name: 'newTarget',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: true
+      expectResult: true
     })
   }
 }

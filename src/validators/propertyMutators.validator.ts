@@ -19,13 +19,15 @@ const testExpression = `
   return isCallSet && obj.a
 `
 
+const name = 'propertyMutators'
 const validator: Validator = {
-  name: 'propertyMutators',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: 1
+      expectResult: 1
     })
   }
 }

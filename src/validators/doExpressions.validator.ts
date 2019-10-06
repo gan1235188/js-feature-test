@@ -11,13 +11,15 @@ const testExpression = `
   };
 `
 
+const name = 'doExpressions'
 const validator: Validator = {
-  name: 'doExpressions',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: 'big'
+      expectResult: 'big'
     })
   }
 }

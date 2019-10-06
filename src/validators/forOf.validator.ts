@@ -5,10 +5,12 @@ const testExpression = `
   for(var i of []){}
 `
 
+const name = 'forOf'
 const validator: Validator = {
-  name: 'forOf',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.expectNoWrong,
       expression: testExpression
     })

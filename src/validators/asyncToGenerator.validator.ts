@@ -5,10 +5,12 @@ const testExpression = `
   async function a(){ await 1 }
 `
 
+const name = 'asyncToGenerator'
 const validator: Validator = {
-  name: 'asyncToGenerator',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.expectNoWrong,
       expression: testExpression
     })

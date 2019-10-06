@@ -5,10 +5,12 @@ const testExpression = `
   obj?.test?.name
 `
 
+const name = 'optionalChaining'
 const validator: Validator = {
-  name: 'optionalChaining',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.expectNoWrong,
       expression: testExpression
     })

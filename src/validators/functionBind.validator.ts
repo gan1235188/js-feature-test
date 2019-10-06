@@ -1,13 +1,17 @@
 import { runTest } from '../tools'
 import { Validator, TestType } from './types'
 
+const testExpression = `{}::()=>{}`
+
+const name = 'functionBind'
 const validator: Validator = {
-  name: 'functionBind',
-  test(content: any) {
-      return runTest({
-          type: TestType.expectNoWrong,
-          expression: `{}::()=>{}`
-      })
+  name,
+  test(content: any, done) {
+    return runTest({
+      done, name,
+      type: TestType.expectNoWrong,
+      expression: testExpression
+    })
   }
 }
 

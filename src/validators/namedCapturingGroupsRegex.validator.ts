@@ -2,17 +2,19 @@ import { runTest } from '../tools'
 import { Validator, TestType } from './types'
 
 const testExpression = `
-var re = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
-return re.exec("1999-02-29").groups.year
+  var re = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+  return re.exec("1999-02-29").groups.year
 `
 
+const name = 'namedCapturingGroupsRegex'
 const validator: Validator = {
-  name: 'namedCapturingGroupsRegex',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: '1999',
+      expectResult: '1999',
     })
   }
 }

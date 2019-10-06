@@ -5,13 +5,15 @@ const testExpression = `
   return 1 || throw new Error('error')
 `
 
+const name = 'throwExpressions'
 const validator: Validator = {
-  name: 'throwExpressions',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: 1
+      expectResult: 1
     })
   }
 }

@@ -1,38 +1,19 @@
 // import * as validators from './featureTest/index'
 import featureTestValidators from './validators/index'
-import { Validator, TestType } from './validators/types'
-import { runTest, output } from './tools'
+import { Validator, checkResult, dynamicProperties, featureTestConfig } from './validators/types'
+import { setConfig } from './tools'
 
-interface dynamicProperty {
-  [key: string]: any
-}
-
-interface FeatureTestOptions {
-  validators: Validator[]
-}
-
-// demo
-const myValidators: Validator[] = [
-  // {
-  //   name: 'functionBind',
-  //   test(content: any) {
-  //     return runTest({
-  //       type: TestType.expectNoWrong,
-  //       expression: `{}::()=>{}`
-  //     })
-  //   }
-  // }
-]
-featureTest({}, { validators: myValidators })
-
-async function featureTest(content: any, options: FeatureTestOptions) {
-  let validators = options ? options.validators || [] : []
-  validators = featureTestValidators.concat(validators)
-  validators = uniqueValidators(validators)
-
-  const testResult = await runValidators(content, validators)
-
+featureTest({}, null, { isOutput: true}, (testResult: boolean) => {
   setCookie('jsFeatureTest', JSON.stringify(testResult), new Date('2022-10-1'), '/')
+})
+
+export function featureTest(content: any, validators: Validator[], config: featureTestConfig, cb?: Function) {
+  setConfig(config)
+  validators = featureTestValidators.concat(validators || [])
+  validators = uniqueValidators(validators)
+  const testResult = runValidators(content, validators, function() {
+    cb && cb(testResult)
+  })
   return testResult
 }
 
@@ -40,35 +21,37 @@ function setCookie(name: string, value: string, expires: Date, path: string) {
   document.cookie = `${name}=${value};expires=${expires};path=${path}`
 }
 
-function getAllCookie() {
-  const cookieMap: dynamicProperty = {}
-  const cookieList = document.cookie.split(';')
-  cookieList.forEach((cookie) => {
-    const [name, value] = cookie.split('=')
-    name && (cookieMap[name] = value)
-  })
+function runValidators(content: any, validators: Validator[], cb: Function) {
+  const featureTestResult: dynamicProperties = {}
+  // let i = 0;
 
-  return cookieMap
-}
-
-async function runValidators(content: any, validators: Validator[]) {
-  const featureTestResult: dynamicProperty = {}
-
-  for (let i = 0; i < validators.length; i++) {
-    await validatorInvoke(validators[i], featureTestResult, content)
+  for(let i = 0; i < validators.length; i++) {
+    validatorInvoke(validators[i++], featureTestResult, done, content)
   }
+  
+  // runIterator(iterator, done)
 
-  return featureTestResult
+  // function iterator(next: Function) {
+  //   if(i < validators.length){
+  //     validatorInvoke(validators[i++], featureTestResult, next, content)
+  //   }
+  // }
+
+  let doneCounter = 1
+  function done() {
+    if(++doneCounter >= validators.length) {
+      cb(featureTestResult)
+    }
+  }
 }
 
-async function validatorInvoke({ name, test }: Validator, featureTestResult: dynamicProperty, content: any) {
+function validatorInvoke({ name, test }: Validator, featureTestResult: dynamicProperties, cb: Function, content: any) {
+  test(content, done)
 
-  output('=================================')
-  const testResult = await test(content)
-  output(`${name}: ${testResult}`)
-  
-  featureTestResult[name] = testResult
-  return testResult
+  function done(result: checkResult) {
+    featureTestResult[name] = result
+    cb(result)
+  }
 }
 
 function uniqueValidators(validators: Validator[]): Validator[] {

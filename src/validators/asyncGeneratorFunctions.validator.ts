@@ -9,16 +9,22 @@ const testExpression = `
 
   return a().next()
 `
-
+const name = 'asyncGeneratorFunctions'
 const validator: Validator = {
-  name: 'asyncGeneratorFunctions',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      async resultCheckFn(expect) {
-        var result = await expect
-        return result && result.value === 2
+      resultCheckFn(resultPromise) {
+        try {
+          resultPromise.then(function(result: any) {
+            done(result && result.value === 2)
+          })
+        }catch(e) {
+          done(false)
+        }
       }
     })
   }

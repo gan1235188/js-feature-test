@@ -10,13 +10,15 @@ const testExpression = `
   return obj.key1
 `
 
+const name = 'computedProperties'
 const validator: Validator = {
-  name: 'computedProperties',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: 1
+      expectResult: 1
     })
   }
 }

@@ -7,13 +7,15 @@ const testExpression = `
   return [a, b]
 `
 
+const name = 'logicalAssignmentOperators'
 const validator: Validator = {
-  name: 'logicalAssignmentOperators',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: [3, 4]
+      expectResult: [3, 4]
     })
   }
 }

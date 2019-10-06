@@ -7,10 +7,12 @@ const testExpression = `
   }
 `
 
+const name = 'propertyLiterals'
 const validator: Validator = {
-  name: 'propertyLiterals',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
       resultCheckFn(expect) {

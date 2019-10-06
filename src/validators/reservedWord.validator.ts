@@ -6,13 +6,15 @@ const testExpression = `
   return abstract;
 `
 
+const name = 'reservedWord'
 const validator: Validator = {
-  name: 'reservedWord',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: 1
+      expectResult: 1
     })
   }
 }

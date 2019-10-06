@@ -5,13 +5,15 @@ const testExpression = `
   return a ?? 1
 `
 
+const name = 'nullishCoalescingOperator'
 const validator: Validator = {
-  name: 'nullishCoalescingOperator',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: 1
+      expectResult: 1
     })
   }
 }

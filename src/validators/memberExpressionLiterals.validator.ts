@@ -1,20 +1,22 @@
 import { runTest } from '../tools'
 import { Validator, TestType } from './types'
 
-const expression = `
+const testExpression = `
     var obj = {}
     obj.default = 1
     return obj
 `
 
+const name = 'memberExpressionLiterals'
 const validator: Validator = {
-  name: 'memberExpressionLiterals',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
-      expression,
+      done, name,
+      expression: testExpression,
       type: TestType.checkResult,
-      resultCheckFn(expect) {
-        return expect['default'] === 1
+      resultCheckFn(expect, { done }) {
+        return done(expect['default'] === 1)
       }
     })
   }

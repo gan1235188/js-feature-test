@@ -5,13 +5,15 @@ const testExpression = `
   return 2 ** 2
 `
 
+const name = 'exponentiationOperator'
 const validator: Validator = {
-  name: 'exponentiationOperator',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: 4
+      expectResult: 4
     })
   }
 }

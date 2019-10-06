@@ -5,13 +5,15 @@ const testExpression = `
   return 1_000
 `
 
+const name = 'numericSeparator'
 const validator: Validator = {
-  name: 'numericSeparator',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: 1000
+      expectResult: 1000
     })
   }
 }

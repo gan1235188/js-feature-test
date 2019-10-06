@@ -7,10 +7,12 @@ const testExpression = `
   function c(...x){}
 `
 
+const name = 'parameters'
 const validator: Validator = {
-  name: 'parameters',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.expectNoWrong,
       expression: testExpression
     })

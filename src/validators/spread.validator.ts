@@ -6,10 +6,12 @@ const testExpression = `
   var b = [...a, 'foo'];
 `
 
+const name = 'spread'
 const validator: Validator = {
-  name: 'spread',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.expectNoWrong,
       expression: testExpression
     })

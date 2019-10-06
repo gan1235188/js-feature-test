@@ -7,13 +7,15 @@ const testExpression = `
   return {x, y, a, b, rest}
 `
 
+const name = 'destructuring'
 const validator: Validator = {
-  name: 'destructuring',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: {x:1, y:1, a:1, b: 2, rest: [3,4,5]}
+      expectResult: {x:1, y:1, a:1, b: 2, rest: [3,4,5]}
     })
   }
 }

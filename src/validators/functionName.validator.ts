@@ -6,13 +6,15 @@ const testExpression = `
   return fn.name
 `
 
+const name = 'functionName'
 const validator: Validator = {
-  name: 'functionName',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: 'fn'
+      expectResult: 'fn'
     })
   }
 }

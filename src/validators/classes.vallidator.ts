@@ -14,13 +14,15 @@ const testExpression = `
   return b.b()
 `
 
+const name = 'classes'
 const validator: Validator = {
-  name: 'classes',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: 2
+      expectResult: 2
     })
   }
 }

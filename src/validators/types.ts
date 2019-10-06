@@ -1,5 +1,5 @@
 export interface Validator {
-  test: (content: any) => boolean | Promise<boolean>
+  test: (content: any, done: (result: boolean) => void) => checkResult
   name: string
 }
 
@@ -10,15 +10,23 @@ export enum TestType {
 }
 
 export type TestOption = {
+  done: (result: boolean) => void
+  name: string
+  description?: string
   expression: string
   type?: TestType
-  args?: any[]
-  result?: any,
-  resultCheckFn?: (expect: any, result: any) => boolean | Promise<boolean>
+  expectResult?: any
+  resultCheckFn?: (expect: any, opt: TestOption) => checkResult
 }
 
-export type checkResult = boolean | Promise<boolean>
+export type checkResult = boolean | void
 
 export interface dynamicProperties {
   [key: string]: any
+}
+
+export type iterator = (next: Function) => any
+
+export interface featureTestConfig {
+  isOutput: boolean
 }

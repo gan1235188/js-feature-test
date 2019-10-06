@@ -9,13 +9,15 @@ const testExpression = `
   return a().next(1)
 `
 
+const name = 'functionSent'
 const validator: Validator = {
-  name: 'functionSent',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: 1
+      expectResult: 1
     })
   }
 }

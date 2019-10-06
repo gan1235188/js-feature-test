@@ -10,10 +10,12 @@ const testExpression = `
   }
 `
 
+const name = 'decorators'
 const validator: Validator = {
-  name: 'decorators',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.expectNoWrong,
       expression: testExpression
     })

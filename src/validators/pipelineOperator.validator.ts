@@ -11,13 +11,15 @@ const testExpression = `
   return 1 |> add(1)
 `
 
+const name = 'pipelineOperator'
 const validator: Validator = {
-  name: 'pipelineOperator',
-  test(content: any) {
+  name,
+  test(content: any, done) {
     return runTest({
+      done, name,
       type: TestType.checkResult,
       expression: testExpression,
-      result: 2
+      expectResult: 2
     })
   }
 }
