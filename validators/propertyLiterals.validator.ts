@@ -1,17 +1,18 @@
 import { runTest } from '../tools'
 import { Validator, TestType } from './types'
 
-const expression = `
-    var obj = {}
-    obj.default = 1
+const testExpression = `
+  return {
+    default: 1
+  }
 `
 
 const validator: Validator = {
-  name: 'memberExpressionLiterals',
+  name: 'propertyLiterals',
   test(content: any) {
     return runTest({
-      expression,
       type: TestType.checkResult,
+      expression: testExpression,
       resultCheckFn(expect) {
         return expect['default'] === 1
       }

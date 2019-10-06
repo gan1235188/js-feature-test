@@ -1,56 +1,62 @@
-export enum TestType {
-    checkResult, //比较结果
-    noWrong //没有错误
-}
-
-export type TestOption = {
-    expression: string
-    type?: TestType
-    args?: any[]
-    result?: any,
-    resultCheckFn?: (expect: any, result: any) => boolean
-}
+import { TestType, TestOption, checkResult } from './validators/types'
 
 const defaultTestOption = {
-    expression: '',
-    type: TestType.noWrong,
-    args: [] as any,
-    result: undefined as any,
-    resultCheckFn: (expect: any, result: any) => expect === result
+  expression: '',
+  type: TestType.expectNoWrong,
+  result: undefined as any,
+  resultCheckFn: (expect: any, result: any) => expect === result
+}
+
+export function runTest(testOpt: TestOption = defaultTestOption): checkResult {
+  const opt = getTestOpt(testOpt)
+
+  switch (opt.type) {
+    case TestType.expectNoWrong:
+      return expectNoWrong(opt)
+    case TestType.checkResult:
+      return checkResult(opt)
+    case TestType.expectThrowError:
+      return expectThrowError(opt)
+    default:
+      return expectNoWrong(opt)
+  }
 }
 
 function getTestOpt(opt: TestOption) {
-    return {
-        ...defaultTestOption,
-        ...opt
-    }
+  return {
+    ...defaultTestOption,
+    ...opt
+  }
 }
 
-export function runTest(testOpt: TestOption = defaultTestOption): boolean {
-    const opt = getTestOpt(testOpt)
-    if(opt.type === TestType.noWrong) {
-        return testNoWrong(opt)
-    } else {
-        return testCheckResult(opt)
-    }
-    
-}
-
-function testNoWrong(opt: TestOption): boolean {    
-    try{
-        const fn = new Function(...opt.args, opt.expression)
-        fn()
-        return true
-    }catch(e) {}
-
+function expectThrowError(opt: TestOption): checkResult {
+  try {
+    createFunction(opt.expression)()
     return false
+  } catch (e) {
+    return true
+  }
 }
 
-function testCheckResult(opt: TestOption): boolean {
-    try{
-        const fn = new Function(...opt.args, opt.expression)
-        return opt.resultCheckFn(opt.resultCheckFn, fn())
-    }catch(e) {}
+function expectNoWrong(opt: TestOption): checkResult {
+  try {
+    createFunction(opt.expression)()
+    return true
+  } catch (e) { }
 
-    return false
+  return false
+}
+
+
+function checkResult(opt: TestOption): checkResult {
+  try {
+    const fn = createFunction(opt.expression)
+    return opt.resultCheckFn(opt.result, fn())
+  } catch (e) { }
+
+  return false
+}
+
+function createFunction(body: string) {
+  return new Function(body)
 }

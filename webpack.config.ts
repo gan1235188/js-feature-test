@@ -3,7 +3,7 @@ module.exports = {
   mode: 'production',
   output: {
     path: __dirname,
-    filename: 'dist/test.js'
+    filename: 'dist/index.js'
   },
   devtool: false,
   resolve: {

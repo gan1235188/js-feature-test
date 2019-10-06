@@ -3,7 +3,7 @@ const path = require('path')
 
 const moduleExports = 'module.exports'
 const outputFile = path.resolve(__dirname, 'dist/index.js')
-const data = fs.readFileSync('./dist/test.js').toString()
+const data = fs.readFileSync('./dist/index.js').toString()
 
 let content = {
   [moduleExports]: data
