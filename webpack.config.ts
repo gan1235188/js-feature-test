@@ -5,7 +5,7 @@ module.exports = {
     path: __dirname,
     filename: 'dist/index.js'
   },
-  devtool: false,
+  devtool: 'source-map',
   resolve: {
     // mainFields: ['jsnext:main', 'browser', 'main'],
     extensions: ['.ts', '.js']

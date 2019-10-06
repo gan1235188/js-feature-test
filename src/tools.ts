@@ -10,6 +10,9 @@ const defaultTestOption = {
 export function runTest(testOpt: TestOption = defaultTestOption): checkResult {
   const opt = getTestOpt(testOpt)
 
+  output(`<pre>expression: ${testOpt.expression}</pre>`)
+  output(`type: ${testOpt.type.toString()}`)
+
   switch (opt.type) {
     case TestType.expectNoWrong:
       return expectNoWrong(opt)
@@ -51,7 +54,7 @@ function expectNoWrong(opt: TestOption): checkResult {
 function checkResult(opt: TestOption): checkResult {
   try {
     const fn = createFunction(opt.expression)
-    return opt.resultCheckFn(opt.result, fn())
+    return opt.resultCheckFn(fn(), opt.result)
   } catch (e) { }
 
   return false
@@ -59,4 +62,8 @@ function checkResult(opt: TestOption): checkResult {
 
 function createFunction(body: string) {
   return new Function(body)
+}
+
+export function output(str: string) {
+  document.write(`<p>${str}</p>`)
 }

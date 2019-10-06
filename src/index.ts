@@ -1,7 +1,7 @@
 // import * as validators from './featureTest/index'
 import featureTestValidators from './validators/index'
 import { Validator, TestType } from './validators/types'
-import { runTest as runValidator } from './tools'
+import { runTest, output } from './tools'
 
 interface dynamicProperty {
   [key: string]: any
@@ -16,7 +16,7 @@ const myValidators: Validator[] = [
   // {
   //   name: 'functionBind',
   //   test(content: any) {
-  //     return runValidator({
+  //     return runTest({
   //       type: TestType.expectNoWrong,
   //       expression: `{}::()=>{}`
   //     })
@@ -25,12 +25,12 @@ const myValidators: Validator[] = [
 ]
 featureTest({}, { validators: myValidators })
 
-function featureTest(content: any, options: FeatureTestOptions) {
+async function featureTest(content: any, options: FeatureTestOptions) {
   let validators = options ? options.validators || [] : []
   validators = featureTestValidators.concat(validators)
   validators = uniqueValidators(validators)
 
-  const testResult = runTest(content, validators)
+  const testResult = await runValidators(content, validators)
 
   setCookie('jsFeatureTest', JSON.stringify(testResult), new Date('2022-10-1'), '/')
   return testResult
@@ -51,16 +51,24 @@ function getAllCookie() {
   return cookieMap
 }
 
-function runTest(content: any, validators: Validator[]) {
+async function runValidators(content: any, validators: Validator[]) {
   const featureTestResult: dynamicProperty = {}
 
-  validators.forEach(async ({ name, test }) => {
-    const testResult = await test(content)
-    console.log(`${name}: ${testResult}`)
-    featureTestResult[name] = testResult ? 1 : 0
-  })
+  for (let i = 0; i < validators.length; i++) {
+    await validatorInvoke(validators[i], featureTestResult, content)
+  }
 
   return featureTestResult
+}
+
+async function validatorInvoke({ name, test }: Validator, featureTestResult: dynamicProperty, content: any) {
+  const testResult = await test(content)
+
+  output(`${name}: ${testResult}`)
+  output('=================================')
+
+  featureTestResult[name] = testResult
+  return testResult
 }
 
 function uniqueValidators(validators: Validator[]): Validator[] {
@@ -84,28 +92,3 @@ function find(arr: any[], fn: (item: any) => boolean): boolean {
 
   return false
 }
-
-
-// function uniqueValidators__TEST() {
-//     const result = uniqueValidators([
-//         {
-//             name: '1',
-//             test: () => true
-//         },
-//         {
-//             name: '1',
-//             test: () => true
-//         }
-//     ])
-
-//     console.log(result)
-// }
-
-// uniqueValidators__TEST() //right
-
-// import config from './transformConfig'
-
-// const transform = require('@babel/core').transform
-// const plugins = Object.entries(config)
-
-// transform()

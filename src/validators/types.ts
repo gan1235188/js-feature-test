@@ -4,9 +4,9 @@ export interface Validator {
 }
 
 export enum TestType {
-  checkResult, //比较结果
-  expectNoWrong, //没有错误
-  expectThrowError //抛出错误
+  checkResult = 'checkResult', //比较结果
+  expectNoWrong = 'expectNoWrong', //没有错误
+  expectThrowError = 'expectThrowError' //抛出错误
 }
 
 export type TestOption = {
