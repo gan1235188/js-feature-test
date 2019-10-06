@@ -3,11 +3,11 @@ import featureTestValidators from './validators/index'
 import { Validator, checkResult, dynamicProperties, featureTestConfig } from './validators/types'
 import { setConfig } from './tools'
 
-featureTest({}, null, { isOutput: true}, (testResult: boolean) => {
+featureTest({}, { isOutput: true}, null, (testResult: boolean) => {
   setCookie('jsFeatureTest', JSON.stringify(testResult), new Date('2022-10-1'), '/')
 })
 
-export function featureTest(content: any, validators: Validator[], config: featureTestConfig, cb?: Function) {
+export function featureTest(content: any, config: featureTestConfig, validators: Validator[], cb?: Function) {
   setConfig(config)
   validators = featureTestValidators.concat(validators || [])
   validators = uniqueValidators(validators)
