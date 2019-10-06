@@ -13,6 +13,7 @@ const validator: Validator = {
   test(content: any, done) {
     return runTest({
       done, name,
+      description: 'https://www.babeljs.cn/docs/plugins',
       type: TestType.checkResult,
       expression: testExpression,
       expectResult: {x:1, y:1, a:1, b: 2, rest: [3,4,5]}

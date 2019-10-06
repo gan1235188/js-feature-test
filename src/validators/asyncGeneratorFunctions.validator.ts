@@ -15,6 +15,7 @@ const validator: Validator = {
   test(content: any, done) {
     return runTest({
       done, name,
+      description: 'https://www.babeljs.cn/docs/plugins',
       type: TestType.checkResult,
       expression: testExpression,
       resultCheckFn(resultPromise) {

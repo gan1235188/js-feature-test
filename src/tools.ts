@@ -89,6 +89,7 @@ function outputHook(opt: TestOption): TestOption {
     output(`test result: ${result}`)
     output(`<pre>expression: ${opt.expression}</pre>`)
     output(`test type: ${opt.type}`)
+    opt.description && output(`description: ${opt.description}`)
     opt.resultCheckFn && output('result check fn: ')
     opt.resultCheckFn && output(`<pre>${opt.resultCheckFn}</pre>`)
     opt.expectResult && output(`exprect result: ${JSON.stringify(opt.expectResult)}`)
