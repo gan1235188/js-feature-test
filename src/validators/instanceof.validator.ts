@@ -6,7 +6,7 @@ const testExpression = `
 `
 
 const name = 'instanceof'
-const validator: Validator = {
+export const validator: Validator = {
   name,
   test(content: any, done) {
     return runTest({
@@ -17,5 +17,3 @@ const validator: Validator = {
     })
   }
 }
-
-export default validator

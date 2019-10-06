@@ -6,7 +6,7 @@ const testExpression = `
 `
 
 const name = 'throwExpressions'
-const validator: Validator = {
+export const validator: Validator = {
   name,
   test(content: any, done) {
     return runTest({
@@ -18,5 +18,3 @@ const validator: Validator = {
     })
   }
 }
-
-export default validator

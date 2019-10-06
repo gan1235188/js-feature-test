@@ -1,5 +1,5 @@
 // import * as validators from './featureTest/index'
-import featureTestValidators from './validators/index'
+import { validators as featureTestValidators } from './validators/index'
 import { Validator, checkResult, dynamicProperties, featureTestConfig } from './validators/types'
 import { setConfig } from './tools'
 
