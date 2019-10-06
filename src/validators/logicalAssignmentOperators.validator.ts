@@ -1,19 +1,19 @@
 import { runTest } from '../tools'
 import { Validator, TestType } from './types'
-import isEqual from 'lodash-es/isEqual'
 
 const testExpression = `
-  return [0b11, 0o7, 'Hello\u{000A}\u{0009}!']
+  var a = 0 ||= 3;
+  var b = 1 &&= 4;
+  return [a, b]
 `
 
 const validator: Validator = {
-  name: 'literals',
+  name: 'logicalAssignmentOperators',
   test(content: any) {
     return runTest({
       type: TestType.checkResult,
       expression: testExpression,
-      result: [3, 7, 'Hello\n\t!'],
-      resultCheckFn: isEqual
+      result: [3, 4]
     })
   }
 }

@@ -2,23 +2,16 @@ import { runTest } from '../tools'
 import { Validator, TestType } from './types'
 
 const testExpression = `
-  async function* a() {
-    await 1;
-    yield 2;
-  }
-
-  return a().next()
+  return [0b11, 0o7, 'Hello\u{000A}\u{0009}!']
 `
 
 const validator: Validator = {
-  name: 'asyncGeneratorFunctions',
+  name: 'literals',
   test(content: any) {
     return runTest({
       type: TestType.checkResult,
       expression: testExpression,
-      async resultCheckFn(expect) {
-        return (await expect).value === 2
-      }
+      result: [3, 7, 'Hello\n\t!']
     })
   }
 }

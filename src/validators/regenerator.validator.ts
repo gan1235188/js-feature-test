@@ -1,5 +1,5 @@
-import { runTest } from 'js-feature-test/tools'
-import { Validator, TestType } from 'js-feature-test/validators/types'
+import { runTest } from '../tools'
+import { Validator, TestType } from './types'
 
 const testExpression = `
   function* a() {

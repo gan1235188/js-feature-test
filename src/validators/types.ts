@@ -18,3 +18,7 @@ export type TestOption = {
 }
 
 export type checkResult = boolean | Promise<boolean>
+
+export interface dynamicProperties {
+  [key: string]: any
+}
