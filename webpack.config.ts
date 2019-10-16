@@ -1,6 +1,6 @@
 module.exports = {
   entry: './src/index.ts',
-  mode: 'production', //development
+  mode: 'development', //development, production
   output: {
     path: __dirname,
     filename: 'dist/index.js'

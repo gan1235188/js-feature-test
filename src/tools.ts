@@ -36,7 +36,7 @@ export function runTest(testOpt: TestOption = defaultTestOption): checkResult {
   let opt = getTestOpt(testOpt)
 
   if(getConfig().isOutput) {
-    opt = outputHook(testOpt)
+    opt = outputHook(opt)
   }
 
   switch (opt.type) {

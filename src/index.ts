@@ -11,10 +11,9 @@ export function featureTest(content: any, config: featureTestConfig, validators:
   setConfig(config)
   validators = featureTestValidators.concat(validators || [])
   validators = uniqueValidators(validators)
-  const testResult = runValidators(content, validators, function() {
-    cb && cb(testResult)
+  runValidators(content, validators, function(result: dynamicProperties) {
+    cb && cb(result)
   })
-  return testResult
 }
 
 function setCookie(name: string, value: string, expires: Date, path: string) {
@@ -23,25 +22,13 @@ function setCookie(name: string, value: string, expires: Date, path: string) {
 
 function runValidators(content: any, validators: Validator[], cb: Function) {
   const featureTestResult: dynamicProperties = {}
-  // let i = 0;
 
   for(let i = 0; i < validators.length; i++) {
-    validatorInvoke(validators[i++], featureTestResult, done, content)
+    validatorInvoke(validators[i], featureTestResult, done, content)
   }
-  
-  // runIterator(iterator, done)
 
-  // function iterator(next: Function) {
-  //   if(i < validators.length){
-  //     validatorInvoke(validators[i++], featureTestResult, next, content)
-  //   }
-  // }
-
-  let doneCounter = 1
   function done() {
-    if(++doneCounter >= validators.length) {
-      cb(featureTestResult)
-    }
+    cb(featureTestResult)
   }
 }
 
