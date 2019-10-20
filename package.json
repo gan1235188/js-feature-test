@@ -3,6 +3,7 @@
   "version": "0.0.3",
   "description": "测试浏览器js特性",
   "main": "dist/index.js",
+  "types": "dist/src",
   "scripts": {
     "build": "npm run webpack && node main.js",
     "webpack": "webpack --config ./webpack.config.ts"

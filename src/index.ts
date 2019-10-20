@@ -4,31 +4,37 @@ import { Validator, checkResult, dynamicProperties, featureTestConfig } from './
 import { setConfig } from './tools'
 
 featureTest({}, { isOutput: true}, null, (testResult: boolean) => {
-  setCookie('jsFeatureTest', JSON.stringify(testResult), new Date('2022-10-1'), '/')
+  const expires = new Date().getTime() + 1000 * 60 * 60 * 24 * 15
+  setCookie('jsFeatureTest', JSON.stringify(testResult), expires, '/')
 })
 
 export function featureTest(content: any, config: featureTestConfig, validators: Validator[], cb?: Function) {
   setConfig(config)
   validators = featureTestValidators.concat(validators || [])
   validators = uniqueValidators(validators)
-  runValidators(content, validators, function(result: dynamicProperties) {
+  runValidators(content, validators, function(result: dynamicProperties, isDone: boolean) {
+    if(isDone) {
+      console.log('finished')
+    }
     cb && cb(result)
   })
 }
 
-function setCookie(name: string, value: string, expires: Date, path: string) {
-  document.cookie = `${name}=${value};expires=${expires};path=${path}`
+function setCookie(name: string, value: string, expires: Date | number, path: string) {
+  document.cookie = `${name}=${value};expires=${new Date(expires).getTime()};path=${path}`
 }
 
 function runValidators(content: any, validators: Validator[], cb: Function) {
   const featureTestResult: dynamicProperties = {}
+  let counter = 0
 
   for(let i = 0; i < validators.length; i++) {
     validatorInvoke(validators[i], featureTestResult, done, content)
   }
 
   function done() {
-    cb(featureTestResult)
+    console.log(counter)
+    cb(featureTestResult, ++counter >= validators.length)
   }
 }
 
