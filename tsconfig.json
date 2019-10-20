@@ -3,7 +3,6 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "sourceMap": false,
-    "declaration": true,
     "outDir": "dist",
     "noImplicitAny": true,
     "target": "ES5"

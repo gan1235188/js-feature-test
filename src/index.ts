@@ -3,9 +3,14 @@ import { validators as featureTestValidators } from './validators/index'
 import { Validator, checkResult, dynamicProperties, featureTestConfig } from './validators/types'
 import { setConfig } from './tools'
 
-featureTest({}, { isOutput: true}, null, (testResult: boolean) => {
+const params = getSearchParams()
+featureTest({}, { isOutput: true}, null, (testResult: boolean, isDone: boolean) => {
   const expires = new Date().getTime() + 1000 * 60 * 60 * 24 * 15
   setCookie('jsFeatureTest', JSON.stringify(testResult), expires, '/')
+
+  if(params.back && isDone) {
+    location.href = params.back
+  }
 })
 
 export function featureTest(content: any, config: featureTestConfig, validators: Validator[], cb?: Function) {
@@ -13,11 +18,20 @@ export function featureTest(content: any, config: featureTestConfig, validators:
   validators = featureTestValidators.concat(validators || [])
   validators = uniqueValidators(validators)
   runValidators(content, validators, function(result: dynamicProperties, isDone: boolean) {
-    if(isDone) {
-      console.log('finished')
-    }
-    cb && cb(result)
+    cb && cb(result, isDone)
   })
+}
+
+function getSearchParams() {
+  const search = location.search.slice(1)
+  const paramList = decodeURIComponent(search).split('&')
+  const result: dynamicProperties = {}
+  for(var i = paramList.length - 1; i >= 0; i--) {
+    const param = paramList[i].split('=')
+    result[param[0]] = param[1]
+  }
+
+  return result
 }
 
 function setCookie(name: string, value: string, expires: Date | number, path: string) {
@@ -26,14 +40,13 @@ function setCookie(name: string, value: string, expires: Date | number, path: st
 
 function runValidators(content: any, validators: Validator[], cb: Function) {
   const featureTestResult: dynamicProperties = {}
-  let counter = 0
+  let counter = 1
 
   for(let i = 0; i < validators.length; i++) {
     validatorInvoke(validators[i], featureTestResult, done, content)
   }
 
   function done() {
-    console.log(counter)
     cb(featureTestResult, ++counter >= validators.length)
   }
 }
