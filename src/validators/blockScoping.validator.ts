@@ -3,7 +3,7 @@ import { Validator, TestType } from './types'
 
 const testExpression = `
   if(1) {
-    var a = 1
+    const a = 1
   }
 
   a

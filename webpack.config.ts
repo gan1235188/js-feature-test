@@ -3,7 +3,7 @@ module.exports = {
     index: './src/index.ts',
     runTeatureTest: './src/runTeatureTest.ts'
   },
-  mode: 'development', //development, production
+  mode: 'production', //development, production
   output: {
     filename: '[name].js',
     path: __dirname + '/dist'
