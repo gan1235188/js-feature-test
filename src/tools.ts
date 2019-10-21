@@ -75,6 +75,39 @@ export function runIterator(iterator: iterator, done: Function) {
   }
 }
 
+
+
+export function isEqual(expect: any, result: any): boolean {
+  if (expect === result) return true
+  if (expect !== expect && result !== result) return true
+
+  if (Array.isArray(expect) && Array.isArray(result)) {
+    return isEqualArray(expect, result)
+  }
+
+  if (typeof expect === 'object' && typeof result === 'object') {
+    return isEqualObject(expect, result)
+  }
+
+  return false
+}
+
+export function isEqualArray(expect: any[], result: any[]): boolean {
+  if (expect.length !== result.length) return false
+  return expect.every((item, index) => isEqual(item, result[index])) &&
+    result.every((item, index) => isEqual(item, expect[index]))
+}
+
+export function isEqualObject(expect: dynamicProperties, result: dynamicProperties) {
+  const expectKeys = Object.keys(expect)
+  const resultKeys = Object.keys(result)
+
+  if (expectKeys.length !== resultKeys.length) return false
+
+  return expectKeys.every((key) => isEqual(expect[key], result[key])) &&
+    resultKeys.every((key) => isEqual(result[key], expect[key]))
+}
+
 function outputHook(opt: TestOption): TestOption {
   const _done = opt.done
 
@@ -138,33 +171,33 @@ function createFunction(body: string) {
   return new Function(body)
 }
 
-function isEqual(expect: any, result: any): boolean {
-  if (expect === result) return true
-  if (expect !== expect && result !== result) return true
 
-  if (Array.isArray(expect) && Array.isArray(result)) {
-    return isEqualArray(expect, result)
+export function sendAjax(method: string, url: string, data: dynamicProperties, cb: (isSuccess: boolean, data?: any) => void) {
+  const ajax = new XMLHttpRequest;
+  ajax.onreadystatechange = function () {
+    if (ajax.readyState == 4 && ajax.status == 200) {
+      cb(true, ajax.responseText)
+    } else {
+      cb(false)
+    }
   }
 
-  if (typeof expect === 'object' && typeof result === 'object') {
-    return isEqualObject(expect, result)
+  ajax.onerror = function(ev) {
+    cb(false, ev)
+  }
+  ajax.open(method.toLocaleUpperCase(), url, true);
+  ajax.setRequestHeader("Content-type", "application/json");
+  ajax.send(JSON.stringify(data));
+}
+
+export function getSearchParams() {
+  const search = location.search.slice(1)
+  const paramList = decodeURIComponent(search).split('&')
+  const result: dynamicProperties = {}
+  for (var i = paramList.length - 1; i >= 0; i--) {
+    const param = paramList[i].split('=')
+    result[param[0]] = param[1]
   }
 
-  return false
-}
-
-function isEqualArray(expect: any[], result: any[]): boolean {
-  if (expect.length !== result.length) return false
-  return expect.every((item, index) => isEqual(item, result[index])) &&
-    result.every((item, index) => isEqual(item, expect[index]))
-}
-
-function isEqualObject(expect: dynamicProperties, result: dynamicProperties) {
-  const expectKeys = Object.keys(expect)
-  const resultKeys = Object.keys(result)
-
-  if (expectKeys.length !== resultKeys.length) return false
-
-  return expectKeys.every((key) => isEqual(expect[key], result[key])) &&
-    resultKeys.every((key) => isEqual(result[key], expect[key]))
+  return result
 }

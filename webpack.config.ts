@@ -1,9 +1,12 @@
 module.exports = {
-  entry: './src/index.ts',
+  entry: {
+    index: './src/index.ts',
+    runTeatureTest: './src/runTeatureTest.ts'
+  },
   mode: 'development', //development, production
   output: {
-    path: __dirname,
-    filename: 'dist/index.js'
+    filename: '[name].js',
+    path: __dirname + '/dist'
   },
   devtool: 'none',
   resolve: {
